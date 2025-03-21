@@ -1,13 +1,12 @@
-import { version } from './package.json';
-
 export interface UmamiOptions {
-  websiteId: string;
   hostUrl?: string;
+  websiteId?: string;
   sessionId?: string;
   userAgent?: string;
 }
 
 export interface UmamiPayload {
+  website: string;
   session?: string;
   hostname?: string;
   language?: string;
@@ -25,48 +24,47 @@ export interface UmamiEventData {
   [key: string]: string | number | Date;
 }
 
-enum EventType {
-  Event = 'event',
-  Identify = 'identify',
-}
-
 export class Umami {
   options: UmamiOptions;
   properties: object;
 
-  constructor() {
+  constructor(options: UmamiOptions = {}) {
+    this.options = options;
     this.properties = {};
-    this.options = { websiteId: '' };
   }
 
   init(options: UmamiOptions) {
-    this.options = { ...options };
+    this.options = { ...this.options, ...options };
   }
 
-  private send(payload: UmamiPayload, type: EventType = EventType.Event) {
-    const { hostUrl, userAgent, websiteId } = this.options;
+  send(payload: UmamiPayload, type: 'event' | 'identify' = 'event') {
+    const { hostUrl, userAgent } = this.options;
 
     return fetch(`${hostUrl}/api/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': userAgent || `Mozilla/5.0 Umami/${version}`,
+        'User-Agent': userAgent || `Mozilla/5.0 Umami/${process.version}`,
       },
-      body: JSON.stringify({ type, payload: {...payload, website: websiteId } }),
+      body: JSON.stringify({ type, payload }),
     });
   }
 
-  track(event: UmamiPayload | string, eventData?: UmamiEventData) {
+  track(event: object | string, eventData?: UmamiEventData) {
     const type = typeof event;
+    const { websiteId } = this.options;
 
     switch (type) {
       case 'string':
         return this.send({
+          website: websiteId as string,
           name: event as string,
           data: eventData,
         });
       case 'object':
-        return this.send({ ...(event as UmamiPayload) });
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return this.send({ website: websiteId, ...(event as UmamiPayload) });
     }
 
     return Promise.reject('Invalid payload.');
@@ -74,11 +72,11 @@ export class Umami {
 
   identify(properties: object = {}) {
     this.properties = { ...this.properties, ...properties };
-    const { sessionId } = this.options;
+    const { websiteId, sessionId } = this.options;
 
     return this.send(
-      { session: sessionId, data: { ...this.properties } },
-      EventType.Identify,
+      { website: websiteId as string, session: sessionId, data: { ...this.properties } },
+      'identify',
     );
   }
 

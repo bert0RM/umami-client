@@ -28,7 +28,7 @@ const runCommonTests = () => {
   });
 
   test('should track events with payload', async () => {
-    const event: UmamiPayload = { title: 'test' };
+    const event: UmamiPayload = { title: 'test', website: 'test' };
     const eventData = { screen: '1920x1080' };
 
     mockFetch();
