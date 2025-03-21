@@ -1,6 +1,12 @@
 # dependencies
 /node_modules
 
+# Jest
+/coverage
+
+# JS
+index.js
+
 # production
 /dist
 

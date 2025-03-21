@@ -57,11 +57,13 @@ export class Umami {
     switch (type) {
       case 'string':
         return this.send({
-          website: websiteId,
+          website: websiteId as string,
           name: event as string,
           data: eventData,
         });
       case 'object':
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         return this.send({ website: websiteId, ...(event as UmamiPayload) });
     }
 
@@ -73,7 +75,7 @@ export class Umami {
     const { websiteId, sessionId } = this.options;
 
     return this.send(
-      { website: websiteId, session: sessionId, data: { ...this.properties } },
+      { website: websiteId as string, session: sessionId, data: { ...this.properties } },
       'identify',
     );
   }
