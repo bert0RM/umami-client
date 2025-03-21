@@ -1,6 +1,6 @@
 {
   "name": "@umami/node",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Node client for Umami",
   "keywords": [
     "node",
@@ -42,6 +42,7 @@
     "@testing-library/react": "^12.1.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^18.11.9",
+    "@types/rollup-plugin-json": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "esbuild": "^0.19.11",
@@ -64,6 +65,7 @@
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^6.1.0",
+    "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-postcss": "^4.0.2",
     "ts-jest": "^29.2.6",
     "ts-node": "^10.9.2",

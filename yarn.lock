@@ -1141,6 +1141,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.5.tgz#a6ce3e556e00fd9895dd872dd172ad0d4bd687f4"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
 
+"@types/estree@0.0.39":
+  version "0.0.39"
+  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
+  integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+
 "@types/glob@^7.1.1":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
@@ -1242,6 +1247,13 @@
   version "1.20.2"
   resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.20.2.tgz#97d26e00cd4a0423b4af620abecf3e6f442b7975"
   integrity sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==
+
+"@types/rollup-plugin-json@^3.0.7":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@types/rollup-plugin-json/-/rollup-plugin-json-3.0.7.tgz#ed1c719f539491a5db407ca25af22ae625a56dd8"
+  integrity sha512-9WocRS41o1NHmIC1THS/Jrku2hBkcxYR1E/n/xehe3Si8B71xBVdCbVOMe24hcsKfhjbTvuvy5oJub8d8FgPig==
+  dependencies:
+    rollup "^0.63.4"
 
 "@types/scheduler@*":
   version "0.16.8"
@@ -5108,6 +5120,13 @@ rollup-plugin-esbuild@^6.1.0:
     es-module-lexer "^1.3.1"
     get-tsconfig "^4.7.2"
 
+rollup-plugin-json@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-json/-/rollup-plugin-json-4.0.0.tgz#a18da0a4b30bf5ca1ee76ddb1422afbb84ae2b9e"
+  integrity sha512-hgb8N7Cgfw5SZAkb3jf0QXii6QX/FOkiIq2M7BAQIEydjHvTyxXHQiIzZaTFgx1GK0cRCHOCBHIyEkkLdWKxow==
+  dependencies:
+    rollup-pluginutils "^2.5.0"
+
 rollup-plugin-postcss@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/rollup-plugin-postcss/-/rollup-plugin-postcss-4.0.2.tgz#15e9462f39475059b368ce0e49c800fa4b1f7050"
@@ -5127,12 +5146,20 @@ rollup-plugin-postcss@^4.0.2:
     safe-identifier "^0.4.2"
     style-inject "^0.3.0"
 
-rollup-pluginutils@^2.8.2:
+rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.8.2:
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
   integrity sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==
   dependencies:
     estree-walker "^0.6.1"
+
+rollup@^0.63.4:
+  version "0.63.5"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.63.5.tgz#5543eecac9a1b83b7e1be598b5be84c9c0a089db"
+  integrity sha512-dFf8LpUNzIj3oE0vCvobX6rqOzHzLBoblyFp+3znPbjiSmSvOoK2kMKx+Fv9jYduG1rvcCfCveSgEaQHjWRF6g==
+  dependencies:
+    "@types/estree" "0.0.39"
+    "@types/node" "*"
 
 rollup@^4.9.2:
   version "4.9.2"
