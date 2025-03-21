@@ -1,12 +1,13 @@
+import { version } from './package.json';
+
 export interface UmamiOptions {
+  websiteId: string;
   hostUrl?: string;
-  websiteId?: string;
   sessionId?: string;
   userAgent?: string;
 }
 
 export interface UmamiPayload {
-  website: string;
   session?: string;
   hostname?: string;
   language?: string;
@@ -24,45 +25,48 @@ export interface UmamiEventData {
   [key: string]: string | number | Date;
 }
 
+enum EventType {
+  Event = 'event',
+  Identify = 'identify',
+}
+
 export class Umami {
   options: UmamiOptions;
   properties: object;
 
-  constructor(options: UmamiOptions = {}) {
-    this.options = options;
+  constructor() {
     this.properties = {};
+    this.options = { websiteId: '' };
   }
 
   init(options: UmamiOptions) {
-    this.options = { ...this.options, ...options };
+    this.options = { ...options };
   }
 
-  send(payload: UmamiPayload, type: 'event' | 'identify' = 'event') {
-    const { hostUrl, userAgent } = this.options;
+  private send(payload: UmamiPayload, type: EventType = EventType.Event) {
+    const { hostUrl, userAgent, websiteId } = this.options;
 
     return fetch(`${hostUrl}/api/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': userAgent || `Mozilla/5.0 Umami/${process.version}`,
+        'User-Agent': userAgent || `Mozilla/5.0 Umami/${version}`,
       },
-      body: JSON.stringify({ type, payload }),
+      body: JSON.stringify({ type, payload: {...payload, website: websiteId } }),
     });
   }
 
-  track(event: object | string, eventData?: UmamiEventData) {
+  track(event: UmamiPayload | string, eventData?: UmamiEventData) {
     const type = typeof event;
-    const { websiteId } = this.options;
 
     switch (type) {
       case 'string':
         return this.send({
-          website: websiteId,
           name: event as string,
           data: eventData,
         });
       case 'object':
-        return this.send({ website: websiteId, ...(event as UmamiPayload) });
+        return this.send({ ...(event as UmamiPayload) });
     }
 
     return Promise.reject('Invalid payload.');
@@ -70,11 +74,11 @@ export class Umami {
 
   identify(properties: object = {}) {
     this.properties = { ...this.properties, ...properties };
-    const { websiteId, sessionId } = this.options;
+    const { sessionId } = this.options;
 
     return this.send(
-      { website: websiteId, session: sessionId, data: { ...this.properties } },
-      'identify',
+      { session: sessionId, data: { ...this.properties } },
+      EventType.Identify,
     );
   }
 
