@@ -119,14 +119,7 @@ export class Umami {
     );
   }
 
-  /**
-   * Tracks an event by either sending a payload or event details to the server.
-   * This method can handle events specified as a string or as a payload object.
-   *
-   * @param {UmamiPayload | string} event - The event to track, either as a payload object or a string representing the event name.
-   * @param {UmamiEventData} [eventData] - Optional additional data related to the event, provided when the event is specified as a string.
-   * @return {Promise} A Promise that resolves when the event is successfully sent or rejects with an error if the payload is invalid.
-   */
+
   trackEvent(event: UmamiPayload | string, eventData?: UmamiEventData): Promise<Response> {
     const type = typeof event;
 
@@ -143,6 +136,14 @@ export class Umami {
     return Promise.reject('Invalid payload.');
   }
 
+  /**
+   * Tracks an event by either sending a payload or event details to the server.
+   * This method can handle events specified as a string or as a payload object.
+   *
+   * @param {UmamiPayload | string} event - The event to track, either as a payload object or a string representing the event name.
+   * @param {UmamiEventData} [eventData] - Optional additional data related to the event, provided when the event is specified as a string.
+   * @return {Promise<Response>} A Promise that resolves when the event is successfully sent or rejects with an error if the payload is invalid.
+   */
   track(event: UmamiPayload | string, eventData?: UmamiEventData) {
     const type = typeof event;
 
