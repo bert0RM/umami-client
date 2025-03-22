@@ -134,14 +134,9 @@ export class Umami {
    *
    * @param {string} event_name - The name of the event being tracked.
    * @param {UmamiPayload} [payload] - Optional additional data to include with the event.
-   * @param {UmamiEventData} [eventData] - Optional data specific to the event. Takes precedence over payload.data.
    * @return {Promise<Response>} A promise that resolves to the server response.
    */
-  trackEvent(
-    event_name: string,
-    payload?: UmamiPayload,
-    eventData?: UmamiEventData,
-  ): Promise<Response> {
+  trackEvent(event_name: string, payload?: UmamiPayload): Promise<Response> {
     const { websiteId } = this.options;
 
     return this.send({
@@ -154,7 +149,6 @@ export class Umami {
       website: websiteId,
       name: event_name,
       ...payload,
-      data: eventData,
     });
   }
 
