@@ -1,10 +1,10 @@
 import { version } from './package.json';
 
 /**
- * Interface representing the configuration options for Umami tracking.
+ * Interface representing the configuration options for Umami.
  *
  * @property websiteId - The unique identifier for the website being tracked. This is a required property.
- * @property hostUrl - The base URL of the Umami server. Optional.
+ * @property hostUrl - The base URL of the Umami server. Must not end with a `/`. Optional.
  * @property sessionId - A unique identifier for the session. This can be used to track a specific user session. Optional.
  * @property userAgent - The user agent string of the client making the request. Optional.
  */
@@ -16,7 +16,7 @@ export interface UmamiOptions {
 }
 
 /**
- * Represents the payload structure used for Umami analytics tracking.
+ * Represents the payload structure used for Umami.
  */
 export interface UmamiPayload {
   session?: string;
@@ -52,7 +52,7 @@ enum EventType {
 }
 
 /**
- * Represents an instance of Umami used for tracking events, page views, and user identification.
+ * Represents an instance of Umami used for tracking events.
  * Provides methods to initialize the instance, track specific actions, and manage user properties.
  */
 export class Umami {
@@ -100,7 +100,7 @@ export class Umami {
    *
    * @param {UmamiPayload | string} event - The event to track, either as a payload object or a string representing the event name.
    * @param {UmamiEventData} [eventData] - Optional additional data related to the event, provided when the event is specified as a string.
-   * @return {Promise} A Promise that resolves when the event is successfully sent or rejects with an error if the payload is invalid.
+   * @return {Promise<Response>} A Promise that resolves when the event is successfully sent or rejects with an error if the payload is invalid.
    */
   track(event: UmamiPayload | string, eventData?: UmamiEventData): Promise<Response> {
     const type = typeof event;
