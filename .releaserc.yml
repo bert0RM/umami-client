@@ -45,3 +45,5 @@ plugins:
             hidden: true
   - - "@semantic-release/npm"
   - - "@semantic-release/github"
+    - successComment: false
+      failComment: false
