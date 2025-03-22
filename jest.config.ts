@@ -1,9 +1,9 @@
-import {Config} from 'jest';
+import { Config } from 'jest';
 
 const config: Config = {
-  testEnvironment: "node",
+  testEnvironment: 'jsdom',
   transform: {
-    "^.+.tsx?$": ["ts-jest",{}],
+    '^.+.tsx?$': ['ts-jest', {}],
   },
   collectCoverage: true,
   coverageDirectory: 'coverage',
