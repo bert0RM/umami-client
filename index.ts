@@ -134,6 +134,7 @@ export class Umami {
    *
    * @param {string} event_name - The name of the event being tracked.
    * @param {UmamiPayload} [payload] - Optional additional data to include with the event.
+   * Overrides defaults obtained from the browser.
    * @return {Promise<Response>} A promise that resolves to the server response.
    */
   trackEvent(event_name: string, payload?: UmamiPayload): Promise<Response> {
