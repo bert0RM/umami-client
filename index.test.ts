@@ -17,37 +17,58 @@ const runCommonTests = () => {
     expect(umami.options.hostUrl).toBe('https://example.com');
   });
 
-  test('should track events', async () => {
-    const eventName = 'page_view';
-    const eventData = { screen: '1920x1080' };
-
+  test('should track page views', async () => {
     mockFetch();
-    const response = await umami.track(eventName, eventData);
+    const response = await umami.trackPageView();
     expect(fetch).toHaveBeenCalled();
     expect(response.ok).toBe(true);
   });
 
-  test('should track events with payload', async () => {
+  test('should track page views with payload', async () => {
     const event: UmamiPayload = { title: 'test' };
-    const eventData = { screen: '1920x1080' };
 
     mockFetch();
-    const response = await umami.track(event, eventData);
+    const response = await umami.trackPageView(event);
     expect(fetch).toHaveBeenCalled();
     expect(response.ok).toBe(true);
   });
 
-  test('should error on bad payload', async () => {
+  test('should error on page view bad payload', async () => {
     const event = undefined as unknown as UmamiPayload;
-    const eventData = { screen: '1920x1080' };
 
     mockFetch();
     try {
-      await umami.track(event, eventData);
+      await umami.trackPageView(event);
     } catch (error) {
-      expect(error).toEqual("Invalid payload.");
+      expect(error).toEqual('Invalid payload.');
     }
+  });
 
+  test('should track custom events', async () => {
+    mockFetch();
+    const response = await umami.trackEvent('button_press');
+    expect(fetch).toHaveBeenCalled();
+    expect(response.ok).toBe(true);
+  });
+
+  test('should track custom events with payload', async () => {
+    const event: UmamiPayload = { title: 'test' };
+
+    mockFetch();
+    const response = await umami.trackEvent('button_press', event);
+    expect(fetch).toHaveBeenCalled();
+    expect(response.ok).toBe(true);
+  });
+
+  test('should error on custom event bad payload', async () => {
+    const event = undefined as unknown as UmamiPayload;
+
+    mockFetch();
+    try {
+      await umami.trackEvent('button_press', event);
+    } catch (error) {
+      expect(error).toEqual('Invalid payload.');
+    }
   });
 
   test('should identify user', async () => {

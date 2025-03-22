@@ -10,9 +10,17 @@ import { version } from './package.json';
  */
 export interface UmamiOptions {
   websiteId: string;
-  hostUrl?: string;
+  hostUrl: string;
   sessionId?: string;
   userAgent?: string;
+}
+
+/**
+ * Represents the internal payload structure used for Umami.
+ */
+interface InternalUmamiPayload extends UmamiPayload {
+  website: string;
+  name?: string;
 }
 
 /**
@@ -26,10 +34,7 @@ export interface UmamiPayload {
   screen?: string;
   title?: string;
   url?: string;
-  name?: string;
-  data?: {
-    [key: string]: string | number | Date;
-  };
+  data?: UmamiEventData;
 }
 
 /**
@@ -61,9 +66,9 @@ export class Umami {
   options: UmamiOptions;
   properties: object;
 
-  constructor() {
+  constructor(options: UmamiOptions) {
     this.properties = {};
-    this.options = { websiteId: '' };
+    this.options = options;
   }
 
   /**
@@ -73,7 +78,7 @@ export class Umami {
    * @return {void} Does not return a value.
    */
   init(options: UmamiOptions): void {
-    this.options = { ...options };
+    this.options = { ...this.options, ...options };
   }
 
   /**
@@ -83,8 +88,11 @@ export class Umami {
    * @param {EventType} [type=EventType.Event] - The type of event being sent (default is EventType.Event).
    * @return {Promise<Response>} A promise that resolves with the server's response.
    */
-  private send(payload: UmamiPayload, type: EventType = EventType.Event): Promise<Response> {
-    const { hostUrl, userAgent, websiteId } = this.options;
+  private send(
+    payload: InternalUmamiPayload,
+    type: EventType = EventType.Event,
+  ): Promise<Response> {
+    const { hostUrl, userAgent } = this.options;
 
     return fetch(`${hostUrl}/api/send`, {
       method: 'POST',
@@ -92,10 +100,9 @@ export class Umami {
         'Content-Type': 'application/json',
         'User-Agent': userAgent || `Mozilla/5.0 Umami/${version}`,
       },
-      body: JSON.stringify({ type, payload: { ...payload, website: websiteId } }),
+      body: JSON.stringify({ type, payload: payload }),
     });
   }
-
 
   /**
    * Tracks a page view event with specified or default parameters and sends the information to the server.
@@ -105,8 +112,11 @@ export class Umami {
    * @return {Promise<Response>} - A promise that resolves to the server response from the tracking event.
    */
   trackPageView(payload?: UmamiPayload): Promise<Response> {
+    const { websiteId } = this.options;
+
     return this.send(
       {
+        website: websiteId,
         hostname: window.location.hostname,
         language: navigator.language,
         referrer: document.referrer,
@@ -119,45 +129,33 @@ export class Umami {
     );
   }
 
-
-  trackEvent(event: UmamiPayload | string, eventData?: UmamiEventData): Promise<Response> {
-    const type = typeof event;
-
-    switch (type) {
-      case 'string':
-        return this.send({
-          name: event as string,
-          data: eventData,
-        });
-      case 'object':
-        return this.send({ ...(event as UmamiPayload) });
-    }
-
-    return Promise.reject('Invalid payload.');
-  }
-
   /**
-   * Tracks an event by either sending a payload or event details to the server.
-   * This method can handle events specified as a string or as a payload object.
+   * Tracks an event by sending event data to Umami.
    *
-   * @param {UmamiPayload | string} event - The event to track, either as a payload object or a string representing the event name.
-   * @param {UmamiEventData} [eventData] - Optional additional data related to the event, provided when the event is specified as a string.
-   * @return {Promise<Response>} A Promise that resolves when the event is successfully sent or rejects with an error if the payload is invalid.
+   * @param {string} event_name - The name of the event being tracked.
+   * @param {UmamiPayload} [payload] - Optional additional data to include with the event.
+   * @param {UmamiEventData} [eventData] - Optional data specific to the event. Takes precedence over payload.data.
+   * @return {Promise<Response>} A promise that resolves to the server response.
    */
-  track(event: UmamiPayload | string, eventData?: UmamiEventData) {
-    const type = typeof event;
+  trackEvent(
+    event_name: string,
+    payload?: UmamiPayload,
+    eventData?: UmamiEventData,
+  ): Promise<Response> {
+    const { websiteId } = this.options;
 
-    switch (type) {
-      case 'string':
-        return this.send({
-          name: event as string,
-          data: eventData,
-        });
-      case 'object':
-        return this.send({ ...(event as UmamiPayload) });
-    }
-
-    return Promise.reject('Invalid payload.');
+    return this.send({
+      hostname: window.location.hostname,
+      language: navigator.language,
+      referrer: document.referrer,
+      screen: `${window.screen.width}x${window.screen.height}`,
+      title: document.title,
+      url: window.location.pathname,
+      website: websiteId,
+      name: event_name,
+      ...payload,
+      data: eventData,
+    });
   }
 
   /**
@@ -169,9 +167,12 @@ export class Umami {
    */
   identify(properties: object = {}): Promise<Response> {
     this.properties = { ...this.properties, ...properties };
-    const { sessionId } = this.options;
+    const { sessionId, websiteId } = this.options;
 
-    return this.send({ session: sessionId, data: { ...this.properties } }, EventType.Identify);
+    return this.send(
+      { website: websiteId, session: sessionId, data: { ...this.properties } },
+      EventType.Identify,
+    );
   }
 
   /**
@@ -183,6 +184,6 @@ export class Umami {
   }
 }
 
-const umami = new Umami();
+const umami = new Umami({ websiteId: '', hostUrl: 'https://cloud.umami.is' });
 
 export default umami;
