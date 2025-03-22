@@ -43,4 +43,5 @@ plugins:
             hidden: false
           - type: chore
             hidden: true
+  - - "@semantic-release/npm"
   - - "@semantic-release/github"
