@@ -105,7 +105,7 @@ export class Umami {
   }
 
   /**
-   * Tracks a page view event with specified or default parameters and sends the information to the server.
+   * Tracks a page view event with specified or default parameters and sends the information to Umami.
    *
    * @param {UmamiPayload} [payload] - Optional additional data to send with the page view event.
    * Overrides defaults obtained from the browser.
@@ -155,9 +155,9 @@ export class Umami {
 
   /**
    * Identifies a user by merging the provided properties with existing properties
-   * and sends the identification data with a session ID.
+   * and attaches the identifying properties to the sessionID in Umami.
    *
-   * @param {object} [properties={}] - The user properties to be identified and merged with existing properties.
+   * @param {object} [properties={}] - The user properties to be merged with existing properties and saved to Umami.
    * @return {Promise<Response>} A promise that resolves to the server response after sending the identification data.
    */
   identify(properties: object = {}): Promise<Response> {
