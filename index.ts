@@ -56,6 +56,53 @@ export class Umami {
     });
   }
 
+
+  /**
+   * Tracks a page view event with specified or default parameters and sends the information to the server.
+   *
+   * @param {UmamiPayload} [payload] - Optional additional data to send with the page view event.
+   * Overrides defaults obtained from the browser.
+   * @return {Promise<Response>} - A promise that resolves to the server response from the tracking event.
+   */
+  trackPageView(payload?: UmamiPayload): Promise<Response> {
+    return this.send(
+      {
+        hostname: window.location.hostname,
+        language: navigator.language,
+        referrer: document.referrer,
+        screen: `${window.screen.width}x${window.screen.height}`,
+        title: document.title,
+        url: window.location.pathname,
+        ...payload,
+      },
+      EventType.Event,
+    );
+  }
+
+  /**
+   * Tracks an event by either sending a payload or event details to the server.
+   * This method can handle events specified as a string or as a payload object.
+   *
+   * @param {UmamiPayload | string} event - The event to track, either as a payload object or a string representing the event name.
+   * @param {UmamiEventData} [eventData] - Optional additional data related to the event, provided when the event is specified as a string.
+   * @return {Promise} A Promise that resolves when the event is successfully sent or rejects with an error if the payload is invalid.
+   */
+  trackEvent(event: UmamiPayload | string, eventData?: UmamiEventData): Promise<Response> {
+    const type = typeof event;
+
+    switch (type) {
+      case 'string':
+        return this.send({
+          name: event as string,
+          data: eventData,
+        });
+      case 'object':
+        return this.send({ ...(event as UmamiPayload) });
+    }
+
+    return Promise.reject('Invalid payload.');
+  }
+
   track(event: UmamiPayload | string, eventData?: UmamiEventData) {
     const type = typeof event;
 
