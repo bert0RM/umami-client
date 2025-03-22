@@ -21,6 +21,7 @@ export interface UmamiOptions {
 interface InternalUmamiPayload extends UmamiPayload {
   website: string;
   name?: string;
+  data?: UmamiEventData;
 }
 
 /**
@@ -34,7 +35,6 @@ export interface UmamiPayload {
   screen?: string;
   title?: string;
   url?: string;
-  data?: UmamiEventData;
 }
 
 /**
@@ -133,11 +133,11 @@ export class Umami {
    * Tracks an event by sending event data to Umami.
    *
    * @param {string} event_name - The name of the event being tracked.
-   * @param {UmamiPayload} [payload] - Optional additional data to include with the event.
+   * @param {UmamiEventData} [data] - Optional additional data to include with the event.
    * Overrides defaults obtained from the browser.
    * @return {Promise<Response>} A promise that resolves to the server response.
    */
-  trackEvent(event_name: string, payload?: UmamiPayload): Promise<Response> {
+  trackEvent(event_name: string, data?: UmamiEventData): Promise<Response> {
     const { websiteId } = this.options;
 
     return this.send({
@@ -149,7 +149,7 @@ export class Umami {
       url: window.location.pathname,
       website: websiteId,
       name: event_name,
-      ...payload,
+      data: data,
     });
   }
 

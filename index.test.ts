@@ -1,4 +1,4 @@
-import umami, { UmamiOptions, UmamiPayload } from './index';
+import umami, { UmamiEventData, UmamiOptions, UmamiPayload } from './index';
 
 const mockFetchResponse = {
   ok: true,
@@ -52,7 +52,7 @@ const runCommonTests = () => {
   });
 
   test('should track custom events with payload', async () => {
-    const event: UmamiPayload = { title: 'test' };
+    const event: UmamiEventData = { id: 'test' };
 
     mockFetch();
     const response = await umami.trackEvent('button_press', event);
@@ -61,7 +61,7 @@ const runCommonTests = () => {
   });
 
   test('should error on custom event bad payload', async () => {
-    const event = undefined as unknown as UmamiPayload;
+    const event = undefined as unknown as UmamiEventData;
 
     mockFetch();
     try {
