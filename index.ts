@@ -27,7 +27,9 @@ export interface UmamiPayload {
   title?: string;
   url?: string;
   name?: string;
-  data?: UmamiEventData;
+  data?: {
+    [key: string]: string | number | Date;
+  };
 }
 
 /**
