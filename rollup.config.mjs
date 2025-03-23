@@ -3,7 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import del from 'rollup-plugin-delete';
 import esbuild from 'rollup-plugin-esbuild';
 import dts from 'rollup-plugin-dts';
-import json from 'rollup-plugin-json';
+import json from '@rollup/plugin-json';
 
 const jsBundle = {
   input: 'index.ts',
