@@ -2,10 +2,11 @@ import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import reactPlugin from 'eslint-plugin-react';
 import prettierPlugin from 'eslint-plugin-prettier/recommended';
 import importPlugin from 'eslint-plugin-import';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import jestPlugin from 'eslint-plugin-jest';
-import promise from 'eslint-plugin-promise';
 
 export default defineConfig([
   { files: ['**/*.{js,mjs,cjs,ts}'] },
@@ -22,8 +23,9 @@ export default defineConfig([
       },
     },
   },
+  reactPlugin.configs.flat.recommended,
   importPlugin.flatConfigs.react,
-  promise.configs['flat/recommended'],
+  reactHooksPlugin.configs['recommended-latest'],
   jestPlugin.configs['flat/recommended'],
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
