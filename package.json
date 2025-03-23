@@ -41,7 +41,7 @@
     "@rollup/plugin-node-resolve": "16.0.1",
     "@testing-library/react": "16.2.0",
     "@types/jest": "29.5.14",
-    "@types/node": "18.19.81",
+    "@types/node": "22.13.11",
     "@types/rollup-plugin-json": "3.0.7",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
