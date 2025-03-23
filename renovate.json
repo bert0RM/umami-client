@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "rebaseWhen": "conflicted",
   "extends": [
-    "config:recommended"
+    "config:best-practices"
   ]
 }
