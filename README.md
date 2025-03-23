@@ -7,14 +7,14 @@ The Umami node client allows you to send data to Umami on the server side.
 ## Installation
 
 ```shell
-npm install @umami/node
+npm install @bert0rm/umami-client
 ```
 
-This command will install api client [npm package](https://www.npmjs.com/package/@umami/node).
+This command will install api client [npm package](https://www.npmjs.com/package/@bert0rm/umami-client).
 ## Usage
 
 ```js
-import umami from '@umami/node';
+import umami from '@bert0rm/umami-client';
 
 //~ init
 let umamiClient = new umami.Umami({
@@ -23,31 +23,30 @@ let umamiClient = new umami.Umami({
   // ,userAgent // (optional) agent specifications ( OS / Browser / Device )
 });
 
-//~ (optional) identify : update with you own session attributes
-const sessionId = Date.now();
-const identifyOptions = {
-    "attribute": "11.23",
-    "sessionId": sessionId
-}
-await umamiClient.identify(identifyOptions);
-
 //~ track a page
+await umamiClient.trackPageView();
+
+//~ track a page with custom properties
 const url = `/home`;
 const title = "title of /home";
 let event = {url, title}
-await umamiClient.track(event);
-console.log(`✮ Page ${JSON.stringify(event)}`);
+await umamiClient.trackPageView(event);
 
-//~ track an event - an event has a *name*
+//~ track a custom event
+const event_name = "button-click"
 const data = {"color": "red"};
-event = {url, title, "name": "button-click", data};
-await umamiClient.track(event);
-console.log(`✮ Event ${JSON.stringify(event)}`);
+await umamiClient.trackEvent(event_name, data);
+
+//~ (optional) identify : add custom attributes to current session
+const identifyOptions = {
+  "attribute": "11.23",
+}
+await umamiClient.identify(identifyOptions);
 ```
 
 If you're using Umami Cloud, then you can use `https://cloud.umami.is` as `hostUrl`.
 
-As `.track` function event argument, the properties you can send are:
+For the `.trackPageView(payload)` function's `payload` argument, the properties you can send are:
 
 - **hostname**: Hostname of server
 - **language**: Client language (eg. en-US)
@@ -56,6 +55,6 @@ As `.track` function event argument, the properties you can send are:
 - **title**: Page title
 - **url**: Page url
 
-And to track event:
-- **name**: Event name
-- **data**: Event data custom properties
+For the `.trackEvent(event_name, data)` function, you can add as many properties in `data` as you'd like.
+- **event_name**: Event name
+- **data**: Event data custom properties (values must be a `string`, `number`, or `Date`)
