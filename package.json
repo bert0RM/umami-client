@@ -63,7 +63,7 @@
     "prettier": "2.8.8",
     "prettier-eslint": "13.0.0",
     "rollup": "4.9.2",
-    "rollup-plugin-delete": "2.2.0",
+    "rollup-plugin-delete": "3.0.1",
     "rollup-plugin-dts": "6.1.0",
     "rollup-plugin-esbuild": "6.1.0",
     "@rollup/plugin-json": "4.0.0",
