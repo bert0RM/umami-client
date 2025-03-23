@@ -60,7 +60,7 @@
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "11.2.6",
-    "prettier": "2.8.8",
+    "prettier": "3.5.3",
     "prettier-eslint": "13.0.0",
     "rollup": "4.36.0",
     "rollup-plugin-delete": "3.0.1",
