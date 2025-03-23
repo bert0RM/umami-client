@@ -12,7 +12,6 @@ export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: {
-      parser: '@typescript-eslint/parser',
       ecmaVersion: 9,
       globals: {
         ...globals.browser,
