@@ -37,6 +37,11 @@ const event_name = "button-click"
 const data = {"color": "red"};
 await umamiClient.trackEvent(event_name, data);
 
+//~ track a custom event for revenue reporting
+const event_name = "checkout-store"
+const data = {"item": "shirt", revenue: 19.99, currency: 'USD'};
+await umamiClient.trackEvent(event_name, data);
+
 //~ (optional) identify : add custom attributes to current session
 const identifyOptions = {
   "attribute": "11.23",

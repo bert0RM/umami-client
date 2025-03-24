@@ -40,17 +40,30 @@ export interface UmamiPayload {
 /**
  * Represents a structure for event data in the Umami analytics system.
  * The data is represented as a collection of key-value pairs where the keys are strings.
+ * Known properties are `revenue` and `currency` which are used for the Revenue report.
  *
  * Values associated with the keys can be of the following types:
  * - string: Used to represent textual data.
  * - number: Used to represent numeric values.
  * - Date: Used to represent temporal information.
+ * - Undefined: Used for optional properties. Omitted from final payload if undefined.
  *
- * This interface provides the flexibility to define various kinds of event-related metadata
- * in a key-value format, making it adaptable to different use cases.
  */
-export interface UmamiEventData {
-  [key: string]: string | number | Date;
+export interface UmamiEventData extends Partial<UmamiRevenueData> {
+  [key: string]: string | number | Date | undefined;
+}
+
+/**
+ * Represents revenue data in Umami. This is used for the Revenue report.
+ *
+ * Properties:
+ * - `revenue`: A numerical value representing the total revenue.
+ * - `currency`: A string value indicating the currency of the revenue,
+ *   adhering to ISO 4217 standard currency codes. If not recognized, the report will default to USD.
+ */
+export interface UmamiRevenueData {
+  revenue: number;
+  currency: string;
 }
 
 enum EventType {
