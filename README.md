@@ -1,20 +1,26 @@
-# @bert0rm/umami-client
+# umami-client
 
 ## Overview
 
-The Umami node client allows you to send data to Umami on the server side.
+The Umami node client allows you to send data to Umami.
 
 ## Installation
 
 ```shell
-npm install @bert0rm/umami-client
+npm install umami-client
+```
+
+or with yarn
+
+```shell
+yarn add umami-client
 ```
 
 This command will install api client [npm package](https://www.npmjs.com/package/@bert0rm/umami-client).
 ## Usage
 
 ```js
-import umami from '@bert0rm/umami-client';
+import umami from 'umami-client';
 
 //~ init
 let umamiClient = new umami.Umami({
