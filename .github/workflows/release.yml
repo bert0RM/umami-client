@@ -28,6 +28,10 @@ jobs:
         run: |
           npm install -g semantic-release
           npm install -g conventional-changelog-conventionalcommits
+      - name: Yarn install
+        run: yarn install
+      - name: Build
+        run: yarn build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

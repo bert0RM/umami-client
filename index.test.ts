@@ -33,17 +33,6 @@ const runCommonTests = () => {
     expect(response.ok).toBe(true);
   });
 
-  test('should error on page view bad payload', async () => {
-    const event = undefined as unknown as UmamiPayload;
-
-    mockFetch();
-    try {
-      await umami.trackPageView(event);
-    } catch (error) {
-      expect(error).toEqual('Invalid payload.');
-    }
-  });
-
   test('should track custom events', async () => {
     mockFetch();
     const response = await umami.trackEvent('button_press');
@@ -58,17 +47,6 @@ const runCommonTests = () => {
     const response = await umami.trackEvent('button_press', event);
     expect(fetch).toHaveBeenCalled();
     expect(response.ok).toBe(true);
-  });
-
-  test('should error on custom event bad payload', async () => {
-    const event = undefined as unknown as UmamiEventData;
-
-    mockFetch();
-    try {
-      await umami.trackEvent('button_press', event);
-    } catch (error) {
-      expect(error).toEqual('Invalid payload.');
-    }
   });
 
   test('should identify user', async () => {

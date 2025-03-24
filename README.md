@@ -1,4 +1,4 @@
-# @umami/node
+# @bert0rm/umami-client
 
 ## Overview
 
